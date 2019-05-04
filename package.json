@@ -2,7 +2,7 @@
   "name": "calculator",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://chamoda.com/react-calculator",
+  "homepage": "https://chamoda.github.io/react-calculator",
   "dependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
