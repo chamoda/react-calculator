@@ -15,7 +15,7 @@ class Calculator extends React.Component {
 
 		this.state = {
 			display: '0',
-			engine: new Engine()
+			engine: new Engine(),
 		};
 
 		this.handleButtonClick = this.handleButtonClick.bind(this);
@@ -38,7 +38,7 @@ class Calculator extends React.Component {
 
 	      		<Display display={this.state.display} />
 
-		        <Button value="AC" className="Button BlackButton" onClick={this.handleButtonClick} />
+		        <Button value={this.state.engine.clearable ? "C" : "AC"} className="Button BlackButton" onClick={this.handleButtonClick} />
 		        <Button value="+/-" className="Button BlackButton" onClick={this.handleButtonClick} />
 		        <Button value="%" className="Button BlackButton" onClick={this.handleButtonClick} />
 		        <Button value={"\u00F7"} className="Button OrangeButton" onClick={this.handleButtonClick} />
