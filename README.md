@@ -1,6 +1,6 @@
 ![banner](banner.png)
 
-## Clone of OSX calculator built with react
+## Clone of macOS calculator built with react
 
 [![CircleCI](https://circleci.com/gh/chamoda/react-calculator/tree/master.svg?style=shield)](https://circleci.com/gh/chamoda/react-calculator/tree/master)
 
