@@ -6,7 +6,27 @@
 
 Checkout the [demo](https://chamoda.com/react-calculator/)
 
-![screen](screen.png)
+## How to run
+
+Clone the repo, then run using npm.
+
+```bash
+git clone https://github.com/chamoda/react-calculator.git && cd react-calculator
+npm install
+npm start
+```
+
+To run tests type
+
+```bash
+npm start
+```
+
+To run eslint checks
+
+```bash
+npm run lint
+```
 
 TODO: 
 * Refactor
