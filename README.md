@@ -6,7 +6,7 @@
 
 Checkout the [demo](https://chamoda.com/react-calculator/)
 
-⚡️ PWA Ready with offline support.
+⚡️ PWA ready with offline support.
 
 ## How to run
 
