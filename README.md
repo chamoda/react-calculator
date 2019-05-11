@@ -1,4 +1,4 @@
-![banner](banner.svg)
+![banner](banner.png)
 
 ## Clone of OSX calculator built with react
 
