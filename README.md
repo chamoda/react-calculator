@@ -6,6 +6,8 @@
 
 Checkout the [demo](https://chamoda.com/react-calculator/)
 
+⚡️ PWA Ready with offline support.
+
 ## How to run
 
 Clone the repo, then run using npm.
