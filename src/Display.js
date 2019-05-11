@@ -1,27 +1,32 @@
-import React from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import './Display.css'
+import './Display.css';
 
 class Display extends React.Component {
 
-	constructor(props) {
+    constructor(props) {
 
-	    super(props);
+        super(props);
 
-    	this.state = {display: props.display};
+        this.state = {display: props.display};
 
-  	}
+    }
 
-	render() {
+    render() {
 
-		return (
-			<div className="Display">
-				<span className="DisplaySpan">{this.props.display}</span>
-			</div>
-		);
+        return (
+            <div className="Display">
+                <span className="DisplaySpan">{this.props.display}</span>
+            </div>
+        );
 
-	}
+    }
 
 }
+
+Display.propTypes = {
+    display: PropTypes.string
+};
 
 export default Display;

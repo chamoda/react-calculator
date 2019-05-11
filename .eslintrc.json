@@ -1,13 +1,18 @@
 {
     "env": {
         "browser": true,
+        "node": true,
         "es6": true,
-	"jest": true
+        "jest": true
     },
-    "extends": "airbnb",
+    "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+    ],
     "globals": {
         "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
+        "SharedArrayBuffer": "readonly",
+    "it": true
     },
     "parserOptions": {
         "ecmaFeatures": {
@@ -20,5 +25,27 @@
         "react"
     ],
     "rules": {
+    "no-console": "off",
+        "indent": [
+            "error",
+            4
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }
