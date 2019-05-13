@@ -1,471 +1,403 @@
 class Engine {
 
-	number
-
-	previousNumber
-
-	repeatNumber
-
-	previousInput
-
-	previousOperation
-
-	repeatOperation
-
-	clearable
-
-	OperationEnum = {
-		addition: '+', 
-		subtraction: '-', 
-		multiplication: 'x', 
-		division: '\u00F7',
-		percentage: '%',
-		sign: '+/-', 
-		equal: '=',
-		allClear: 'AC',
-		clear: 'C'
-	}
-
-	constructor(){
+    constructor(){
 		
-		this.number = ''
+        this.number = '';
 
-		this.previousInput = null
+        this.previousInput = null;
 
-		this.previousNumber = null
+        this.previousNumber = null;
 
-		this.previousOperation = null
+        this.previousOperation = null;
 
-		this.repeatNumber = null
+        this.repeatNumber = null;
 
-		this.repeatOperation = null
+        this.repeatOperation = null;
 
-		this.clearable = false
+        this.clearable = false;
 
-	}
+        this.OperationEnum = {
+            addition: '+', 
+            subtraction: '-', 
+            multiplication: 'x', 
+            division: '\u00F7',
+            percentage: '%',
+            sign: '+/-', 
+            equal: '=',
+            allClear: 'AC',
+            clear: 'C'
+        };	
 
-	calculate(input){
+    }
 
-		if(this.isDigit(input)){
+    updatePreviousStatus(number, input){
 
-			this.clearable = true
+    	this.previousNumber = number;
+        this.previousInput = input;	
+        this.previousOperation = input;
 
-			if(this.isOperation(this.previousInput)){
+    }
 
-				this.number = ''
+    // Handle and process all digit inputs including . 
+    handleDigitInput(input){
 
-			}
+		this.clearable = true;
 
-			if(input === '.' && this.containDecimalPoint(this.number)){
+        if(this.isOperation(this.previousInput)){
 
-				return this.number
+            this.number = '';
 
-			}
+        }
 
-			if(input === '.' && this.number === ''){
+        if(input === '.' && this.containDecimalPoint(this.number)){
 
-				this.number = '0.'
+            return this.number;
 
-				return this.number
+        }
 
-			}
+        if(input === '.' && this.number === ''){
 
-			this.number += input
+            this.number = '0.';
 
-			this.previousInput = input
+            return this.number;
 
-			return this.removeZero(this.number)
+        }
 
-		};
+        this.number += input;
 
-		if(this.isOperation(input)){
+        this.previousInput = input;
+
+        return this.removeZero(this.number);    	
+
+    }
+
+	// Handle all operation other than digit inputs.    
+    handleOperationInput(input){
+
+    	if(input === this.OperationEnum.addition 
+    		|| input === this.OperationEnum.subtraction 
+    		|| input === this.OperationEnum.multiplication
+    		|| input === this.OperationEnum.division){
+
+    		return this.handleBaiscMathOperation(input);
+
+    	}
+
+        if(input === this.OperationEnum.percentage){
+
+            return this.handlePercentageOperation(input)
+
+        }
+
+        if(input === this.OperationEnum.sign){
+
+            return this.handleSignOperation(input)
+
+        }
+
+        if(input === this.OperationEnum.allClear){
+
+            return this.handleAllClearOperation();
+
+        }
+
+        if(input === this.OperationEnum.clear){
+
+            return this.handleClearOperation();
+
+        }
+
+        if(input === this.OperationEnum.equal) {
+
+            return this.handleEqualOperation(input)
+
+        }
+
+    }
+
+    // Only handle basic +, -, /, x operations
+    handleBaiscMathOperation(input){
+
+	    this.repeatNumber = null;
+        this.repeatOperation = null;
+
+        if(this.previousNumber == null){
+
+        	this.updatePreviousStatus(this.number, input);
+
+            return this.number;
+
+        } else {
+
+            let temp = this.previousInput;
+            this.previousInput = input;
+
+            if(temp !== input && this.previousOperation !== this.OperationEnum.equal && temp !== '='){
+                
+                if(this.previousOperation === this.OperationEnum.addition){
+                    this.number = this.add(this.previousNumber, this.number);
+                }
+                if(this.previousOperation === this.OperationEnum.subtraction){
+                    this.number = this.subtract(this.previousNumber, this.number);
+                }
+                if(this.previousOperation === this.OperationEnum.multiplication){
+                    this.number = this.muliply(this.previousNumber, this.number);
+                }
+                if(this.previousOperation === this.OperationEnum.division){
+                    this.number = this.divide(this.previousNumber, this.number);
+                }
+
+                this.updatePreviousStatus(this.number, input)
+
+                return this.number;
+
+            } else {
+
+                this.updatePreviousStatus(this.number, input)
+
+                return this.number;
+
+            }
+        }
+
+    }
+
+    handlePercentageOperation(input){
+
+    	if(this.number === ''){
+            this.number = '0';
+        }
+
+        this.number = this.percentage(this.number);
+
+        return this.number;
+
+    }
+
+    handleSignOperation(input){
+
+    	if(this.number === ''){
+            this.number = '0';
+        }
+
+        this.number = this.changeSign(this.number);
+
+        return this.number;
+
+    }
+
+    handleAllClearOperation(){
+
+    	return this.allClear();
+
+    }
+
+    handleClearOperation(){
+
+    	return this.clear();
+
+    }
+
+    // Paramter operation is one of add, subtract, multiply or divide
+    perform(operation){
+
+		if(this.repeatNumber !== null){
+            this.number = operation(this.number, this.repeatNumber);	
+        } else {
+            this.repeatNumber = this.number;	
+            this.number = operation(this.previousNumber, this.number);
+        }    	
+
+    }
+
+    handleEqualOperation(input){
+
+    	if(this.previousNumber == null){
+
+            this.updatePreviousStatus(this.number, input);
+
+            return this.number;
+
+        } else {
 			
-			if(input === this.OperationEnum.addition) {
-
-				this.repeatNumber = null
-				this.repeatOperation = null
-
-				if(this.previousNumber == null){
-					this.previousNumber = this.number
-					this.previousInput = input	
-					this.previousOperation = input
-					return this.number
-				} else {
-					let temp = this.previousInput
-					this.previousInput = input
-
-					if(input === this.OperationEnum.addition && temp !== input && this.previousOperation !== this.OperationEnum.equal && temp !== '='){
-						if(this.previousOperation === this.OperationEnum.addition){
-							this.number = this.add(this.previousNumber, this.number);
-						}
-						if(this.previousOperation === this.OperationEnum.subtraction){
-							this.number = this.subtract(this.previousNumber, this.number);
-						}
-						if(this.previousOperation === this.OperationEnum.multiplication){
-							this.number = this.muliply(this.previousNumber, this.number);
-						}
-						if(this.previousOperation === this.OperationEnum.division){
-							this.number = this.divide(this.previousNumber, this.number);
-						}
-						this.previousNumber = this.number
-						this.previousInput = input	
-						this.previousOperation = input
-						return this.number
-					} else {
-						this.previousNumber = this.number
-						this.previousInput = input	
-						this.previousOperation = input
-						return this.number
-					}
-				}
-
-			}
-
-			if(input === this.OperationEnum.subtraction) {
-
-				this.repeatNumber = null
-				this.repeatOperation = null
-
-				if(this.previousNumber == null){
-					this.previousNumber = this.number
-					this.previousInput = input	
-					this.previousOperation = input
-					return this.number
-				} else {
-					let temp = this.previousInput
-					this.previousInput = input
-					if(input === this.OperationEnum.subtraction && temp !== input && this.previousOperation !== this.OperationEnum.equal && temp !== '='){
-						if(this.previousOperation === this.OperationEnum.addition){
-							this.number = this.add(this.previousNumber, this.number);
-						}
-						if(this.previousOperation === this.OperationEnum.subtraction){
-							this.number = this.subtract(this.previousNumber, this.number);
-						}
-						if(this.previousOperation === this.OperationEnum.multiplication){
-							this.number = this.muliply(this.previousNumber, this.number);
-						}
-						if(this.previousOperation === this.OperationEnum.division){
-							this.number = this.divide(this.previousNumber, this.number);
-						}
-						this.previousNumber = this.number
-						this.previousInput = input	
-						this.previousOperation = input
-						return this.number
-					} else {
-						this.previousNumber = this.number
-						this.previousInput = input	
-						this.previousOperation = input
-						return this.number
-					}
-				}
-
-			}
-
-			if(input === this.OperationEnum.multiplication) {
-
-				this.repeatNumber = null
-				this.repeatOperation = null
-
-				if(this.previousNumber == null){
-					this.previousNumber = this.number
-					this.previousInput = input	
-					this.previousOperation = input
-					return this.number
-				} else {
-					let temp = this.previousInput
-					this.previousInput = input
-					if(input === this.OperationEnum.multiplication && temp !== input && this.previousOperation !== this.OperationEnum.equal && temp !== '='){
-						if(this.previousOperation === this.OperationEnum.addition){
-							this.number = this.add(this.previousNumber, this.number);
-						}
-						if(this.previousOperation === this.OperationEnum.subtraction){
-							this.number = this.subtract(this.previousNumber, this.number);
-						}
-						if(this.previousOperation === this.OperationEnum.multiplication){
-							this.number = this.muliply(this.previousNumber, this.number);
-						}
-						if(this.previousOperation === this.OperationEnum.division){
-							this.number = this.divide(this.previousNumber, this.number);
-						}
-						this.previousNumber = this.number
-						this.previousInput = input	
-						this.previousOperation = input
-						return this.number
-					} else {
-						this.previousNumber = this.number
-						this.previousInput = input	
-						this.previousOperation = input
-						return this.number
-					}
-				}
-
-			}
-
-			if(input === this.OperationEnum.division) {
-
-				this.repeatNumber = null
-				this.repeatOperation = null
-
-				if(this.previousNumber == null){
-					this.previousNumber = this.number
-					this.previousInput = input	
-					this.previousOperation = input
-					return this.number
-				} else {
-					let temp = this.previousInput
-					this.previousInput = input
-					if(input === this.OperationEnum.division && temp !== input && this.previousOperation !== this.OperationEnum.equal && temp !== '='){
-						if(this.previousOperation === this.OperationEnum.addition){
-							this.number = this.add(this.previousNumber, this.number);
-						}
-						if(this.previousOperation === this.OperationEnum.subtraction){
-							this.number = this.subtract(this.previousNumber, this.number);
-						}
-						if(this.previousOperation === this.OperationEnum.multiplication){
-							this.number = this.muliply(this.previousNumber, this.number);
-						}
-						if(this.previousOperation === this.OperationEnum.division){
-							this.number = this.divide(this.previousNumber, this.number);
-						}
-						this.previousNumber = this.number
-						this.previousInput = input	
-						this.previousOperation = input
-						return this.number
-					} else {
-						this.previousNumber = this.number
-						this.previousInput = input	
-						this.previousOperation = input
-						return this.number
-					}
-				}
-
-			}
-
-			if(input === this.OperationEnum.percentage){
-
-				if(this.number === ''){
-					this.number = '0'
-				}
-
-				this.number = this.percentage(this.number)
-
-				return this.number
-
-			}
-
-			if(input === this.OperationEnum.sign){
-
-				if(this.number === ''){
-					this.number = '0'
-				}
-
-				this.number = this.changeSign(this.number)
-
-				return this.number
-
-			}
-
-			if(input === this.OperationEnum.allClear){
-
-				return this.allClear()
-
-			}
-
-			if(input === this.OperationEnum.clear){
-
-				return this.clear()
-
-			}
-
-			if(input === this.OperationEnum.equal) {
-
-				if(this.previousNumber == null){
-					this.previousNumber = this.number
-					this.previousInput = input	
-					this.previousOperation = input
-					return this.number
-				} else {
-					
-					this.previousInput = input
-					if(this.previousOperation !== this.OperationEnum.equal && input === this.OperationEnum.equal){	
-						let temp = this.number
-						if(this.previousOperation === this.OperationEnum.addition){
-							if(this.repeatNumber !== null){
-								this.number = this.add(this.number, this.repeatNumber);	
-							} else {
-								this.repeatNumber = this.number	
-								this.number = this.add(this.previousNumber, this.number);
-							}
-						}
-						if(this.previousOperation === this.OperationEnum.subtraction){
-							if(this.repeatNumber !== null){
-								this.number = this.subtract(this.number, this.repeatNumber);	
-							} else {
-								this.repeatNumber = this.number	
-								this.number = this.subtract(this.previousNumber, this.number);
-							}
-						}
-						if(this.previousOperation === this.OperationEnum.multiplication){
-							if(this.repeatNumber !== null){
-								this.number = this.muliply(this.number, this.repeatNumber);	
-							} else {
-								this.repeatNumber = this.number	
-								this.number = this.muliply(this.previousNumber, this.number);
-							}
-						}
-						if(this.previousOperation === this.OperationEnum.division){
-							if(this.repeatNumber !== null){
-								this.number = this.divide(this.number, this.repeatNumber);	
-							} else {
-								this.repeatNumber = this.number	
-								this.number = this.divide(this.previousNumber, this.number);
-							}
-						}
-						this.repeatNumber = temp
-						this.repeatOperation = this.previousOperation
-						this.previousInput = input	
-						this.previousOperation = input
-						return this.number
+            this.previousInput = input;
 
-					} else {
+            if(this.previousOperation !== this.OperationEnum.equal && input === this.OperationEnum.equal){	
+                
+                let temp = this.number;
 
-						let temp = this.number
+                if(this.previousOperation === this.OperationEnum.addition){
+                    this.perform(this.add)
+                }
+                if(this.previousOperation === this.OperationEnum.subtraction){
+                    this.perform(this.subtract)
+                }
+                if(this.previousOperation === this.OperationEnum.multiplication){
+                    this.perform(this.muliply)
+                }
+                if(this.previousOperation === this.OperationEnum.division){
+                    this.perform(this.divide);
+                }
 
-						if(this.repeatNumber != null){
+                this.repeatNumber = temp;
+                this.repeatOperation = this.previousOperation;
+                this.previousInput = input;	
+                this.previousOperation = input;
 
-							if(this.repeatOperation === this.OperationEnum.addition){
-								this.number = this.add(this.number, this.repeatNumber);	
-							}
-							if(this.repeatOperation === this.OperationEnum.subtraction){
-								this.number = this.subtract(this.number, this.repeatNumber);	
-							}
-							if(this.repeatOperation === this.OperationEnum.multiplication){
-								this.number = this.muliply(this.number, this.repeatNumber);	
-							}
-							if(this.repeatOperation === this.OperationEnum.division){
-								this.number = this.divide(this.number, this.repeatNumber);	
-							}
+                return this.number;
 
-						}
+            } else {
 
-						this.previousNumber = temp
-						this.previousInput = input	
-						this.previousOperation = input
-						return this.number
-					}
-				}
+                let temp = this.number;
 
-			}
+                if(this.repeatNumber != null){
 
-		}
+                    if(this.repeatOperation === this.OperationEnum.addition){
+                        this.number = this.add(this.number, this.repeatNumber);	
+                    }
+                    if(this.repeatOperation === this.OperationEnum.subtraction){
+                        this.number = this.subtract(this.number, this.repeatNumber);	
+                    }
+                    if(this.repeatOperation === this.OperationEnum.multiplication){
+                        this.number = this.muliply(this.number, this.repeatNumber);	
+                    }
+                    if(this.repeatOperation === this.OperationEnum.division){
+                        this.number = this.divide(this.number, this.repeatNumber);	
+                    }
 
-		return "Error"
+                }
 
-	}
+                this.updatePreviousStatus(temp, input);
 
-	isDigit(input){
+                return this.number;
 
-		return !isNaN(input) || input === '.'
+            }
 
-	}
+        }
 
-	isOperation(input){
+    }
 
-		return Object.values(this.OperationEnum).includes(input)
+    calculate(input){
 
-	}
+        if(this.isDigit(input)){
 
-	add(previousNumber, number){
+            return this.handleDigitInput(input);
 
-		return (parseFloat(previousNumber) + parseFloat(number)).toString()
+        }
 
-	}
+        if(this.isOperation(input)){
+			
+			return this.handleOperationInput(input);
+            
+        }
 
-	subtract(previousNumber, number){
+        return 'Error';
 
-		return (parseFloat(previousNumber) - parseFloat(number)).toString()
+    }
 
-	}
+    isDigit(input){
 
-	muliply(previousNumber, number){
+        return !isNaN(input) || input === '.';
 
-		return (parseFloat(previousNumber) * parseFloat(number)).toString()
+    }
 
-	}
+    isOperation(input){
 
-	divide(previousNumber, number){
+        return Object.values(this.OperationEnum).includes(input);
 
-		return (parseFloat(previousNumber) / parseFloat(number)).toString()
+    }
 
-	}
+    add(previousNumber, number){
 
-	percentage(number){
+        return (parseFloat(previousNumber) + parseFloat(number)).toString();
 
-		return (parseFloat(number) / 100).toString()
+    }
 
-	}
+    subtract(previousNumber, number){
 
-	changeSign(number){
+        return (parseFloat(previousNumber) - parseFloat(number)).toString();
 
-		return parseFloat(number) === 0 ? '0' : (parseFloat(number) * -1).toString()
+    }
 
-	}
+    muliply(previousNumber, number){
 
-	clear(){
+        return (parseFloat(previousNumber) * parseFloat(number)).toString();
 
-		this.previousInput = null
+    }
 
-		this.previousNumber = null
+    divide(previousNumber, number){
 
-		this.previousOperation = null
+        return (parseFloat(previousNumber) / parseFloat(number)).toString();
 
-		this.repeatNumber = null
+    }
 
-		this.repeatOperation = null
+    percentage(number){
 
-		this.clearable = false
+        return (parseFloat(number) / 100).toString();
 
-		return this.number
+    }
 
-	}
+    changeSign(number){
 
-	allClear(){
+        return parseFloat(number) === 0 ? '0' : (parseFloat(number) * -1).toString();
 
-		this.number = ''
+    }
 
-		this.previousInput = null
+    clear(){
 
-		this.previousNumber = null
+        this.previousInput = null;
 
-		this.previousOperation = null
+        this.previousNumber = null;
 
-		this.repeatNumber = null
+        this.previousOperation = null;
 
-		this.repeatOperation = null
+        this.repeatNumber = null;
 
-		this.clearable = false
+        this.repeatOperation = null;
 
-		return '0'
+        this.clearable = false;
 
-	}
+        return this.number;
 
-	removeZero(number){
+    }
 
-		if(number.length > 1 && number[0] === '0' && number[1] !== '.'){
+    allClear(){
 
-			return this.removeZero(number.substr(1, number.length))
+        this.number = '';
 
-		}
+        this.previousInput = null;
 
-		return number
+        this.previousNumber = null;
 
-	}
+        this.previousOperation = null;
 
-	containDecimalPoint(number){
+        this.repeatNumber = null;
 
-		return number.includes('.')
+        this.repeatOperation = null;
 
-	}
+        this.clearable = false;
+
+        return '0';
+
+    }
+
+    removeZero(number){
+
+        if(number.length > 1 && number[0] === '0' && number[1] !== '.'){
+
+            return this.removeZero(number.substr(1, number.length));
+
+        }
+
+        return number;
+
+    }
+
+    containDecimalPoint(number){
+
+        return number.includes('.');
+
+    }
 
 }
 
