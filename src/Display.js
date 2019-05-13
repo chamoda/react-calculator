@@ -55,6 +55,12 @@ class Display extends React.Component {
 
     }
 
+    resetFontSize(){
+
+        this.divRef.current.style.fontSize = '14vmin';
+
+    }
+
     render() {
 
         return (
@@ -66,14 +72,10 @@ class Display extends React.Component {
     }
 
      componentDidUpdate() {
-        
+
         let divWidth = this.divRef.current.clientWidth;
 
-        if(divWidth > this.previousWidth){
-        
-            this.divRef.current.style.fontSize = '14vmin';
-            
-        }
+        this.resetFontSize();
 
         this.reduceFontSize();
 
