@@ -9,17 +9,75 @@ class Display extends React.Component {
 
         super(props);
 
-        this.state = {display: props.display};
+        this.state = {display: props.display, width: window.width};
+
+        this.divRef = React.createRef();
+
+        this.spanRef = React.createRef();
+
+        this.previousWidth = window.width;
+
+    }
+
+    updateDimensions() {
+        
+        this.setState({...this.state, width: window.innerWidth});
+        
+    }
+
+    componentDidMount() {
+        
+        window.addEventListener('resize', this.updateDimensions.bind(this));
+
+    }
+
+    componentWillUnmount() {
+
+        window.removeEventListener('resize', this.updateDimensions.bind(this));
+
+    }
+
+    getFontSize(){
+
+        return parseFloat(window.getComputedStyle(this.divRef.current, null).getPropertyValue('font-size'));
+
+    }
+
+    reduceFontSize(){
+
+        if(this.divRef.current.clientWidth > this.spanRef.current.clientWidth + 40){
+            return;
+        }
+
+        this.divRef.current.style.fontSize = this.getFontSize() - 10 + 'px';
+
+        this.reduceFontSize();                
 
     }
 
     render() {
 
         return (
-            <div className="Display">
-                <span className="DisplaySpan">{this.props.display}</span>
+            <div ref={ this.divRef} className="Display">
+                <span ref={ this.spanRef } className="DisplaySpan">{this.props.display}</span>
             </div>
         );
+
+    }
+
+     componentDidUpdate() {
+        
+        let divWidth = this.divRef.current.clientWidth;
+
+        if(divWidth > this.previousWidth){
+        
+            this.divRef.current.style.fontSize = '14vmin';
+            
+        }
+
+        this.reduceFontSize();
+
+        this.previousWidth = divWidth;
 
     }
 

@@ -31,9 +31,7 @@ npm run lint
 ```
 
 TODO: 
-* Refactor
-* Add detailed README.md 
-
+* Ability to handle large numbers
 
 
 

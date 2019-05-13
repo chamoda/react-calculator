@@ -1,7 +1,7 @@
 class Engine {
 
     constructor(){
-		
+        
         this.number = '';
 
         this.previousInput = null;
@@ -26,14 +26,14 @@ class Engine {
             equal: '=',
             allClear: 'AC',
             clear: 'C'
-        };	
+        };  
 
     }
 
     updatePreviousStatus(number, input){
 
-    	this.previousNumber = number;
-        this.previousInput = input;	
+        this.previousNumber = number;
+        this.previousInput = input; 
         this.previousOperation = input;
 
     }
@@ -41,7 +41,7 @@ class Engine {
     // Handle and process all digit inputs including . 
     handleDigitInput(input){
 
-		this.clearable = true;
+        this.clearable = true;
 
         if(this.isOperation(this.previousInput)){
 
@@ -67,31 +67,31 @@ class Engine {
 
         this.previousInput = input;
 
-        return this.removeZero(this.number);    	
+        return this.removeZero(this.number);        
 
     }
 
-	// Handle all operation other than digit inputs.    
+    // Handle all operation other than digit inputs.    
     handleOperationInput(input){
 
-    	if(input === this.OperationEnum.addition 
-    		|| input === this.OperationEnum.subtraction 
-    		|| input === this.OperationEnum.multiplication
-    		|| input === this.OperationEnum.division){
+        if(input === this.OperationEnum.addition 
+            || input === this.OperationEnum.subtraction 
+            || input === this.OperationEnum.multiplication
+            || input === this.OperationEnum.division){
 
-    		return this.handleBaiscMathOperation(input);
+            return this.handleBaiscMathOperation(input);
 
-    	}
+        }
 
         if(input === this.OperationEnum.percentage){
 
-            return this.handlePercentageOperation(input)
+            return this.handlePercentageOperation();
 
         }
 
         if(input === this.OperationEnum.sign){
 
-            return this.handleSignOperation(input)
+            return this.handleSignOperation();
 
         }
 
@@ -109,7 +109,7 @@ class Engine {
 
         if(input === this.OperationEnum.equal) {
 
-            return this.handleEqualOperation(input)
+            return this.handleEqualOperation(input);
 
         }
 
@@ -118,12 +118,12 @@ class Engine {
     // Only handle basic +, -, /, x operations
     handleBaiscMathOperation(input){
 
-	    this.repeatNumber = null;
+        this.repeatNumber = null;
         this.repeatOperation = null;
 
         if(this.previousNumber == null){
 
-        	this.updatePreviousStatus(this.number, input);
+            this.updatePreviousStatus(this.number, input);
 
             return this.number;
 
@@ -147,13 +147,13 @@ class Engine {
                     this.number = this.divide(this.previousNumber, this.number);
                 }
 
-                this.updatePreviousStatus(this.number, input)
+                this.updatePreviousStatus(this.number, input);
 
                 return this.number;
 
             } else {
 
-                this.updatePreviousStatus(this.number, input)
+                this.updatePreviousStatus(this.number, input);
 
                 return this.number;
 
@@ -162,9 +162,9 @@ class Engine {
 
     }
 
-    handlePercentageOperation(input){
+    handlePercentageOperation(){
 
-    	if(this.number === ''){
+        if(this.number === ''){
             this.number = '0';
         }
 
@@ -174,9 +174,9 @@ class Engine {
 
     }
 
-    handleSignOperation(input){
+    handleSignOperation(){
 
-    	if(this.number === ''){
+        if(this.number === ''){
             this.number = '0';
         }
 
@@ -188,52 +188,52 @@ class Engine {
 
     handleAllClearOperation(){
 
-    	return this.allClear();
+        return this.allClear();
 
     }
 
     handleClearOperation(){
 
-    	return this.clear();
+        return this.clear();
 
     }
 
     // Paramter operation is one of add, subtract, multiply or divide
     perform(operation){
 
-		if(this.repeatNumber !== null){
-            this.number = operation(this.number, this.repeatNumber);	
+        if(this.repeatNumber !== null){
+            this.number = operation(this.number, this.repeatNumber);    
         } else {
-            this.repeatNumber = this.number;	
+            this.repeatNumber = this.number;    
             this.number = operation(this.previousNumber, this.number);
-        }    	
+        }       
 
     }
 
     handleEqualOperation(input){
 
-    	if(this.previousNumber == null){
+        if(this.previousNumber == null){
 
             this.updatePreviousStatus(this.number, input);
 
             return this.number;
 
         } else {
-			
+            
             this.previousInput = input;
 
-            if(this.previousOperation !== this.OperationEnum.equal && input === this.OperationEnum.equal){	
+            if(this.previousOperation !== this.OperationEnum.equal && input === this.OperationEnum.equal){  
                 
                 let temp = this.number;
 
                 if(this.previousOperation === this.OperationEnum.addition){
-                    this.perform(this.add)
+                    this.perform(this.add);
                 }
                 if(this.previousOperation === this.OperationEnum.subtraction){
-                    this.perform(this.subtract)
+                    this.perform(this.subtract);
                 }
                 if(this.previousOperation === this.OperationEnum.multiplication){
-                    this.perform(this.muliply)
+                    this.perform(this.muliply);
                 }
                 if(this.previousOperation === this.OperationEnum.division){
                     this.perform(this.divide);
@@ -241,7 +241,7 @@ class Engine {
 
                 this.repeatNumber = temp;
                 this.repeatOperation = this.previousOperation;
-                this.previousInput = input;	
+                this.previousInput = input; 
                 this.previousOperation = input;
 
                 return this.number;
@@ -253,16 +253,16 @@ class Engine {
                 if(this.repeatNumber != null){
 
                     if(this.repeatOperation === this.OperationEnum.addition){
-                        this.number = this.add(this.number, this.repeatNumber);	
+                        this.number = this.add(this.number, this.repeatNumber); 
                     }
                     if(this.repeatOperation === this.OperationEnum.subtraction){
-                        this.number = this.subtract(this.number, this.repeatNumber);	
+                        this.number = this.subtract(this.number, this.repeatNumber);    
                     }
                     if(this.repeatOperation === this.OperationEnum.multiplication){
-                        this.number = this.muliply(this.number, this.repeatNumber);	
+                        this.number = this.muliply(this.number, this.repeatNumber); 
                     }
                     if(this.repeatOperation === this.OperationEnum.division){
-                        this.number = this.divide(this.number, this.repeatNumber);	
+                        this.number = this.divide(this.number, this.repeatNumber);  
                     }
 
                 }
@@ -286,8 +286,8 @@ class Engine {
         }
 
         if(this.isOperation(input)){
-			
-			return this.handleOperationInput(input);
+            
+            return this.handleOperationInput(input);
             
         }
 
