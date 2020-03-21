@@ -4,7 +4,7 @@
 
 [![CircleCI](https://circleci.com/gh/chamoda/react-calculator/tree/master.svg?style=shield)](https://circleci.com/gh/chamoda/react-calculator/tree/master)
 
-This is my first project in React js. Purpose of this project to learn basic React.
+Purpose of this project to learn basic React.
 
 Checkout the [demo](https://chamoda.com/react-calculator/)
 
