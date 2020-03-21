@@ -30,4 +30,4 @@ To run eslint checks
 
 ```bash
 npm run lint
-``` 
+```
