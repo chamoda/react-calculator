@@ -32,8 +32,3 @@ To run eslint checks
 npm run lint
 ```
 
-TODO: 
-* Ability to handle large numbers
-
-
-
