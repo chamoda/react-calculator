@@ -2,7 +2,7 @@
 
 ## Clone of macOS calculator built with react
 
-[![CircleCI](https://circleci.com/gh/chamoda/react-calculator/tree/master.svg?style=shield)](https://circleci.com/gh/chamoda/react-calculator/tree/master)
+![Node.js CI](https://github.com/chamoda/react-calculator/workflows/Node.js%20CI/badge.svg)
 
 Purpose of this project to learn basic React.
 
