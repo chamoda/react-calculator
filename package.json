@@ -40,7 +40,14 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.13.0",
     "gh-pages": "^2.0.1",
+    "husky": "^4.2.5",
     "jest": "^24.7.1",
     "prettier": "2.0.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier -- --write && npm run lint",
+      "pre-push": "npm test -- --watchAll=false"
+    }
   }
 }
