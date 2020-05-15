@@ -6,11 +6,10 @@ import "./Display.css";
 class Display extends React.Component {
   constructor(props) {
     super(props);
-
+    
     this.state = { display: props.display, width: window.width };
-
+    
     this.divRef = React.createRef();
-
     this.spanRef = React.createRef();
 
     this.previousWidth = window.width;
@@ -67,7 +66,6 @@ class Display extends React.Component {
     let divWidth = this.divRef.current.clientWidth;
 
     this.resetFontSize();
-
     this.reduceFontSize();
 
     this.previousWidth = divWidth;

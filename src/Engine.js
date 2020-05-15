@@ -3,15 +3,10 @@ class Engine {
     this.number = "";
 
     this.previousInput = null;
-
     this.previousNumber = null;
-
     this.previousOperation = null;
-
     this.repeatNumber = null;
-
     this.repeatOperation = null;
-
     this.clearable = false;
 
     this.OperationEnum = {
@@ -47,7 +42,6 @@ class Engine {
 
     if (input === "." && this.number === "") {
       this.number = "0.";
-
       return this.number;
     }
 
@@ -276,15 +270,10 @@ class Engine {
 
   clear() {
     this.previousInput = null;
-
     this.previousNumber = null;
-
     this.previousOperation = null;
-
     this.repeatNumber = null;
-
     this.repeatOperation = null;
-
     this.clearable = false;
 
     return this.number;
@@ -292,17 +281,11 @@ class Engine {
 
   allClear() {
     this.number = "";
-
     this.previousInput = null;
-
     this.previousNumber = null;
-
     this.previousOperation = null;
-
     this.repeatNumber = null;
-
     this.repeatOperation = null;
-
     this.clearable = false;
 
     return "0";
