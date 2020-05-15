@@ -16,7 +16,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "lint": "eslint src",
-    "prettier": "prettier ."
+    "prettier": "prettier src"
   },
   "eslintConfig": {
     "extends": "react-app"
