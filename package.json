@@ -41,7 +41,7 @@
     "eslint-plugin-react": "^7.13.0",
     "gh-pages": "^2.0.1",
     "husky": "^4.2.5",
-    "jest": "^24.9.0",
+    "jest": "^26.0.1",
     "prettier": "^2.0.5"
   },
   "husky": {
