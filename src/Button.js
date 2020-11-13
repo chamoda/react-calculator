@@ -4,7 +4,7 @@ import { HotKeys, GlobalHotKeys } from "react-hotkeys";
 import "./Button.css";
 
 class Button extends React.Component {
- keyMap = {
+  keyMap = {
     1: "1",
     2: "2",
     3: "3",
