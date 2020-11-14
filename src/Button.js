@@ -84,7 +84,7 @@ class Button extends React.Component {
       },
     };
   }
-  
+
   render() {
     return (
       <GlobalHotKeys keyMap={this.keyMap} handlers={this.handlers}>
