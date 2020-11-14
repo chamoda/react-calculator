@@ -23,7 +23,7 @@ npm start
 To run tests type
 
 ```bash
-npm start
+npm test
 ```
 
 To run eslint checks
