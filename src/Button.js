@@ -18,7 +18,7 @@ class Button extends React.Component {
       8: "8",
       9: "9",
       0: "0",
-      EQUAL: "enter",
+      EQUAL: "=",
       MULTIPLY: "shift+8",
       ADD: "shift+=",
       SUBTRACT: "-",
@@ -26,6 +26,7 @@ class Button extends React.Component {
       AC: "c",
       DOT: ".",
       PERCENT: "shift+5",
+      ENTER: "enter",
     };
     this.handlers = {
       1: () => {
@@ -81,6 +82,9 @@ class Button extends React.Component {
       },
       PERCENT: () => {
         this.props.onClick("%");
+      },
+      ENTER: () => {
+        this.props.onClick("=");
       },
     };
   }
