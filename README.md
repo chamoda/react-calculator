@@ -31,3 +31,9 @@ To run eslint checks
 ```bash
 npm run lint
 ```
+
+To deploy to github pages
+
+```bash
+npm run deploy
+```
