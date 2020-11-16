@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://chamoda.github.io/react-calculator",
   "dependencies": {
-    "react": "^16.8.6",
+    "react": "^16.14.0",
     "react-dom": "^16.8.6",
     "react-hotkeys": "^2.0.0",
     "react-scripts": "^3.4.1"
